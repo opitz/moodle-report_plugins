@@ -37,27 +37,16 @@ $PAGE->set_title($pluginname);
 $PAGE->set_heading($pluginname);
 $PAGE->requires->js_call_amd('report_plugins/navigation', 'init', array());
 
+$output = $PAGE->get_renderer('report_plugins');
+
+echo $output->header();
+echo $output->show_navigation();
+
 // Get all plugins with some information sorted by type.
 $pluginsbytype = core_plugin_manager::instance()->get_plugins();
 
-$output = $PAGE->get_renderer('report_plugins');
-echo $output->header();
-
-echo $output->show_navigation();
-
 foreach ($pluginsbytype as $plugintype => $plugins) {
-    echo $output->heading($plugintype);
-
-    $columns = [
-        'Full Name' => 'displayname',
-        'Directory' => 'rootdir',
-        'Version' => 'versiondb',
-        'Release' => 'release',
-        'Source' => 'source',
-        'Uses' => ''
-    ];
-    echo $output->show_plugin_list($plugins, $columns);
-    echo "<hr>";
+    echo $output->render_plugins_report($plugins, $plugintype);
 }
 
 echo $output->footer();

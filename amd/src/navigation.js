@@ -33,6 +33,7 @@ define(['jquery', 'jqueryui'], function($) {
             $(document).ready(function() {
                 console.log('=================< reports_plugins/navigation.js >=================');
                 initFunctions();
+                $('#toggle-core').click();
             });
         }
     };

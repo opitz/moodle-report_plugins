@@ -75,3 +75,15 @@ function get_format_plugins() {
 
     return $DB->get_records_sql($sql);
 }
+
+function report_plugins_before_footer() {
+    echo html_writer::tag('div', 'The End', ['style' => 'text-align: center;']);
+}
+
+function match_uses(&$plugins, $pluginuses) {
+    foreach ($pluginuses as $pluginuse) {
+        if (isset($plugins[$pluginuse->name])) {
+            $plugins[$pluginuse->name]->uses = $pluginuse->uses;
+        }
+    }
+}

@@ -7,7 +7,7 @@ table.alternate tr:nth-child(odd) {
 }
 
 table.lined tr {
-    border-bottom: solid 1px grey;
+    border-bottom: solid 1px lightgrey;
 }
 
 .col-name {
@@ -43,3 +43,10 @@ th#uses {
     width: 400px;
 }
 
+td.displayname {
+    font-weight: bold;
+}
+
+tr.std td {
+    background-color: #c0ffc0;
+}
