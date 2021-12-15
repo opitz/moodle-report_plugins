@@ -1,0 +1,45 @@
+table.alternate tr:nth-child(even) {
+    background: #CCC
+}
+
+table.alternate tr:nth-child(odd) {
+    background: #FFF
+}
+
+table.lined tr {
+    border-bottom: solid 1px grey;
+}
+
+.col-name {
+    width: 250px;
+}
+
+table .table-header {
+    color: #0a78d1;
+    font-weight: bold;
+}
+
+th#displayname {
+    width: 300px;
+}
+
+th#rootdir {
+    width: 500px;
+}
+
+th#versiondb {
+    width: 120px;
+}
+
+th#release {
+    width: 180px;
+}
+
+th#source {
+    width: 80px;
+}
+
+th#uses {
+    width: 400px;
+}
+
