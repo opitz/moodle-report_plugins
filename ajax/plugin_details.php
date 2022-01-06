@@ -71,6 +71,16 @@ function plugin_details($plugin) {
                 }
             }
             $o .= html_writer::tag('td', $text);
+        } else if ($source == 'github_url') {
+            $text = '';
+            $github_urls = explode(',', $plugin->$source);
+            if (count($github_urls) > 0) {
+                foreach ($github_urls as $github_url) {
+                    $text .= html_writer::tag('a', $github_url, ['href' => $github_url, 'target' => '_blank']);
+                    $text .= html_writer::empty_tag('br');
+                }
+            }
+            $o .= html_writer::tag('td', $text);
         } else {
             $o .= html_writer::tag('td', $plugin->$source);
         }
