@@ -36,18 +36,17 @@ $pluginname = get_string('pluginname', 'report_plugins');
 $PAGE->set_title($pluginname);
 $PAGE->set_heading($pluginname);
 $PAGE->requires->js_call_amd('report_plugins/navigation', 'init', array());
+$PAGE->requires->js_call_amd('report_plugins/ajax', 'init', array());
 
 $output = $PAGE->get_renderer('report_plugins');
 
 echo $output->header();
-echo $output->show_navigation();
+echo $output->render_navigation();
+echo $output->render_detailspage();
+//echo $output->render_importpage();
 
 // Get all plugins with some information sorted by type.
 $pluginsbytype = core_plugin_manager::instance()->get_plugins();
-
-foreach ($pluginsbytype as $plugintype => $plugins) {
-    echo $output->render_plugins_report($plugins, $plugintype);
-}
-
+echo $output->render_pluginsbytype($pluginsbytype);
 echo $output->footer();
 

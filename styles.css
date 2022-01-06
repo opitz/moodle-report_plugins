@@ -50,3 +50,15 @@ td.displayname {
 tr.std td {
     background-color: #c0ffc0;
 }
+
+.title-col {
+    width: 200px;
+}
+
+td.frankenstyle {
+    display: none;
+}
+
+.title-col {
+    vertical-align: top;
+}

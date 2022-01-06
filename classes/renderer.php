@@ -32,6 +32,57 @@ defined('MOODLE_INTERNAL') || die;
  */
 class report_plugins_renderer extends plugin_renderer_base {
 
+    public function render_detailspage() {
+        $o = '';
+        $o .= html_writer::tag('div','', ['id' => 'details', 'class' => 'details']);
+        return $o;
+    }
+
+    public function render_importpage() {
+        $o = '';
+        $o .= html_writer::start_tag('div',['id' => 'import-excel', 'class' => 'import']);
+
+        $o .= html_writer::tag('h1', "Upload Excel Data");
+        $o .= html_writer::start_tag('form', array('method' => 'post',
+            'action' => 'uploadexcel.php',
+            'enctype' => 'multipart/form-data'));
+        $o .= html_writer::start_tag('div', ['class' => 'form-group']);
+        $o .= html_writer::tag('label', 'Choose File');
+        $o .= html_writer::tag('input', '', ['id' => 'import-filename', 'class' => 'form-control', 'value' => '']);
+        $o .= html_writer::tag('button', 'Upload', [
+            'id' => 'import-btn',
+            'type' => 'submit',
+            'name' => 'submit',
+            'class' => 'btn btn-success',
+        ]);
+        /*
+
+        <h1>Upload Excel File</h1>
+	<form method="POST" action="uploadexcel.php" enctype="multipart/form-data">
+		<div class="form-group">
+			<label>Choose File</label>
+			<input type="file" name="uploadFile" class="form-control" />
+		</div>
+		<div class="form-group">
+			<button type="submit" name="submit" class="btn btn-success">Upload</button>
+		</div>
+	</form>
+
+*/
+        $o .= html_writer::end_tag('div');
+        return $o;
+    }
+
+    public function render_pluginsbytype($pluginsbytype) {
+        $o = '';
+        $o .= html_writer::start_tag('div', ['class' => 'plugins']);
+        foreach ($pluginsbytype as $plugintype => $plugins) {
+            $o .= $this->render_plugins_report($plugins, $plugintype);
+        }
+        $o .= html_writer::end_tag('div');
+        return $o;
+    }
+
     public function render_plugins_report($plugins, $plugintype = false) {
         $o ='';
         $typetitle = [
@@ -72,12 +123,13 @@ class report_plugins_renderer extends plugin_renderer_base {
             return $o;
         }
 
-        // The headers of the columns to show and what data to show.
+        // The headers of the columns and what data to show.
         $columns = [
             'Full Name' => 'displayname',
             'Directory' => 'rootdir',
             'Version' => 'versiondb',
             'Release' => 'release',
+            'Dependencies' => 'dependencies',
             'Uses' => 'uses'
         ];
 
@@ -96,19 +148,21 @@ class report_plugins_renderer extends plugin_renderer_base {
                 match_uses($plugins, $pluginuses);
                 break;
         }
-        $header = $typetitle[$plugintype] . " ($plugintype)";
+        $toggler = '<i class="toggle-type toggler-open fa fa-angle-down" type="' . $plugintype . '" style="cursor: pointer;"></i>';
+        $toggler .= '<i class="toggle-type toggler-closed fa fa-angle-right" type="' . $plugintype . '" style="cursor: pointer; display: none;"></i>';
+        $header = $toggler . ' ' . $typetitle[$plugintype] . " ($plugintype)";
 
         // Now put everything together.
-        $o .= html_writer::start_tag('div', ['class' => "type-wrapper "]);
-        if ($header) {
-            $o .= $this->heading($header);
-        }
-        $o .= $this->show_plugin_list($plugins, $columns);
+
+        $o .= html_writer::start_tag('div', ['class' => "type-wrapper $plugintype"]);
+        $o .= html_writer::tag('div', $this->heading($header), ['class' => "type-title $plugintype"]);
+        $o .= $this->show_plugin_list($plugins, $plugintype, $columns);
         $o .= html_writer::empty_tag('hr');
         $o .= html_writer::end_tag('div');
 
         return $o;
     }
+
     /**
      * Show a list of plugins with the given columns
      *
@@ -116,11 +170,11 @@ class report_plugins_renderer extends plugin_renderer_base {
      * @param $columns
      * @return string
      */
-    public function show_plugin_list($plugins, $columns) {
+    public function show_plugin_list($plugins, $plugintype, $columns) {
         $o='';
 //        $o .= html_writer::start_tag('table', ['class' => 'alternate']);
         $o .= html_writer::start_tag('table', ['class' => 'lined']);
-        $o .= html_writer::start_tag('tr', ['class' => 'table-header']);
+        $o .= html_writer::start_tag('tr', ['class' => "table-header $plugintype"]);
 
         // Build the table header.
         foreach ($columns as $column => $source) {
@@ -128,9 +182,33 @@ class report_plugins_renderer extends plugin_renderer_base {
         }
         $o .= html_writer::end_tag('tr');
         foreach ($plugins as $plugin) {
-            $o .= html_writer::start_tag('tr', ['class' => $plugin->type."_$plugin->name $plugin->source"]);
+            $o .= html_writer::start_tag('tr',
+                [
+                    'class' => "$plugin->type $plugin->name $plugin->source",
+                    'pluginname' => $plugin->name,
+                    'type' => $plugin->type
+                ]
+            );
+            // Hide a column with the franken_style name oof the plugin to be used by JavaScript when showing details.
+            $o .= html_writer::tag('td', $plugin->type . '_' . $plugin->name, ['class' => 'frankenstyle']);
+
             foreach ($columns as $key => $column) {
-                $o .= html_writer::tag('td', $plugin->$column, ['class' => $columns[$key]]);
+                // If the column shows the rootdir show only the relative part
+                if ($column == 'rootdir') {
+                    $text = substr($plugin->$column, 14);
+                } else if ($column == 'dependencies') {
+                    $text = '';
+                    // If there are dependencies show them and the required version.
+                    if (count($plugin->$column) > 0) {
+                        foreach ($plugin->$column as $dependency => $version) {
+                            $text .= "$dependency ($version)<br>";
+                        }
+                    }
+                } else {
+                    $text = $plugin->$column;
+                }
+
+                $o .= html_writer::tag('td', $text, ['class' => $columns[$key]]);
             }
             $o .= html_writer::end_tag("tr");
         }
@@ -143,11 +221,25 @@ class report_plugins_renderer extends plugin_renderer_base {
      *
      * @return string
      */
-    public function show_navigation() {
+    public function render_navigation() {
         $o = '';
+        // Navigation for the plugins page
+        $o .= html_writer::start_tag('div', ['class' => 'plugins']);
         $o .= html_writer::tag('div', 'Hide Core', ['id' => 'toggle-core', 'class' => 'btn btn-primary hide-core']);
-        $o .= html_writer::empty_tag('hr');
+        $o .= "&nbsp;";
+        $o .= html_writer::tag('div', 'Import Excel Data', ['id' => 'import-excel', 'class' => 'btn btn-secondary import-excel']);
+        $o .= "&nbsp;";
+        $o .= html_writer::tag('div', 'Export Excel Data', ['id' => 'export-excel', 'class' => 'btn btn-secondary export-excel']);
+        $o .= html_writer::end_tag('div');
 
+        // Navigation for the details page
+        $o .= html_writer::start_tag('div', ['class' => 'details', 'style' => 'display: none;']);
+        $o .= html_writer::tag('div', 'Close', ['id' => 'close-details', 'class' => 'btn btn-primary']);
+        $o .= "&nbsp;";
+        $o .= html_writer::tag('div', 'Hide Admins', ['id' => 'toggle-admins', 'class' => 'btn btn-primary hide-admins']);
+        $o .= html_writer::end_tag('div');
+
+        $o .= html_writer::empty_tag('hr');
         return $o;
     }
 
