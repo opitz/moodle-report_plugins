@@ -225,12 +225,26 @@ class report_plugins_renderer extends plugin_renderer_base {
         $o = '';
         // Navigation for the plugins page
         $o .= html_writer::start_tag('div', ['class' => 'plugins']);
+        $o .= html_writer::start_tag('form', [
+            'id' => 'export-excel2',
+            'method' => 'post',
+            'action' => 'export_excel.php'
+        ]);
         $o .= html_writer::tag('div', 'Hide Core', ['id' => 'toggle-core', 'class' => 'btn btn-primary hide-core']);
         $o .= "&nbsp;";
         $o .= html_writer::tag('div', 'Import Excel Data', ['id' => 'import-excel', 'class' => 'btn btn-secondary import-excel']);
         $o .= "&nbsp;";
-        $o .= html_writer::tag('div', 'Export Excel Data', ['id' => 'export-excel', 'class' => 'btn btn-secondary export-excel']);
+//        $o .= html_writer::tag('div', 'Export Excel Data', ['id' => 'export-excel', 'class' => 'btn btn-secondary export-excel']);
+
+        $o .= html_writer::tag('input', '', [
+            'type' => 'submit',
+            'value' => 'Export Excel Data',
+            'class' => 'btn btn-primary'
+        ]);
+        $o .= html_writer::end_tag('form');
+
         $o .= html_writer::end_tag('div');
+
 
         // Navigation for the details page
         $o .= html_writer::start_tag('div', ['class' => 'details', 'style' => 'display: none;']);

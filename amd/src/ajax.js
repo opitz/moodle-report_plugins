@@ -4,7 +4,7 @@ define(['jquery', 'jqueryui'], function($) {
         init: function() {
             var import_excel = function() {
                 $("#import-excel").on('click', function() {
-                    console.log('importing excel data here...');
+                    console.log('Now importing Excel data - please be patient...');
 
                     $.ajax({
                         url: "ajax/import_excel.php",
