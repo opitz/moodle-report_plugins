@@ -160,7 +160,10 @@ function importPluginData($row, $columns) {
             $plugin->title = 'n.a.';
         }
         if ($plugin->public != NULL) {
-            $plugin->public = '1';
+            $plugin->public = 1;
+        }
+        if ($plugin->qmul_plugin != NULL) {
+            $plugin->qmul_plugin = 1;
         }
         return $DB->update_record('report_plugins', $plugin);
     }
