@@ -5,6 +5,17 @@ define(['jquery', 'jqueryui'], function($) {
             var import_excel = function() {
                 $("#import-excel").on('click', function() {
                     console.log('importing excel data here...');
+
+                    $.ajax({
+                        url: "ajax/import_excel.php",
+                        type: "POST",
+                        data: {
+                            'sesskey': M.cfg.sesskey
+                        },
+                        success: function(result) {
+                            console.log(result);
+                        }
+                    });
                 });
             };
 

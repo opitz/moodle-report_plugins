@@ -56,7 +56,13 @@ function plugin_details($plugin) {
         'Developer' => 'developer',
         'Dependencies' => 'dependencies',
         'Uses' => 'uses',
+        'Description' => 'description',
+        'More Information' => 'info_url',
         'Github' => 'github_url',
+        'Plugin Catalog' => 'plugin_url',
+        'DevOps Wiki' => 'wiki_url',
+        'Requested by' => 'requested_by',
+        'Year added' => 'year_added',
     ];
     $o .= html_writer::start_tag('table', ['id' => 'details-table', 'class' => 'lined']);
     foreach ($details as $title => $source) {
@@ -80,6 +86,10 @@ function plugin_details($plugin) {
                     $text .= html_writer::empty_tag('br');
                 }
             }
+            $o .= html_writer::tag('td', $text);
+        } else if ($source == 'info_url' || $source == 'plugin_url' || $source == 'wiki_url') {
+            $text = html_writer::tag('a', $plugin->$source, ['href' => $plugin->$source, 'target' => '_blank']);
+            $text .= html_writer::empty_tag('br');
             $o .= html_writer::tag('td', $text);
         } else {
             $o .= html_writer::tag('td', $plugin->$source);

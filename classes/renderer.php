@@ -42,7 +42,7 @@ class report_plugins_renderer extends plugin_renderer_base {
         $o = '';
         $o .= html_writer::start_tag('div',['id' => 'import-excel', 'class' => 'import']);
 
-        $o .= html_writer::tag('h1', "Upload Excel Data");
+        $o .= html_writer::tag('h1', "Import Excel Data");
         $o .= html_writer::start_tag('form', array('method' => 'post',
             'action' => 'uploadexcel.php',
             'enctype' => 'multipart/form-data'));
