@@ -43,7 +43,7 @@ $output = $PAGE->get_renderer('report_plugins');
 echo $output->header();
 echo $output->render_navigation();
 echo $output->render_detailspage();
-//echo $output->render_importpage();
+echo $output->render_importpage();
 
 // Get all plugins with some information sorted by type.
 $pluginsbytype = core_plugin_manager::instance()->get_plugins();

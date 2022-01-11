@@ -97,7 +97,7 @@ function export2excel($plugins, $fileName) {
 //    header('Content-Disposition: attachment; filename="'. urlencode($fileName).'"');
 //    $writer->save('php://output');
 }
-function pluginTemplate() {
+function pluginTemplate00() {
     return [
         "repository_url" => "Repository URL",
         "title" => "Title",

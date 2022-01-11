@@ -58,26 +58,6 @@ $writer->save('hello_world.xlsx');
 */
 echo "Es ist vollbracht!";
 
-function pluginTemplate() {
-    return [
-        "repository_url" => "Repository URL",
-        "title" => "Title",
-        "github_url" => "GitHub URL",
-        "install_path" => "Install Path",
-        "dependencies" => "Dependencies (min. version)",
-        "developer" => "Developer",
-        "qmul_plugin" => "QMUL Plugin",
-        "description" => "Description",
-        "plugin_url" => "Plugin URL",
-        "wiki_url" => "Wiki URL",
-        "info_url" => "Info URL",
-        "requester" => "Requester",
-        "year_added" => "Year added",
-        "uses_number" => "Nr of Uses",
-        "public" => "Public",
-    ];
-}
-
 /**
  * Matching the column titles from the spreadsheet to data fields in the data table.
  *

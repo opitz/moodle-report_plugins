@@ -43,30 +43,49 @@ class report_plugins_renderer extends plugin_renderer_base {
         $o .= html_writer::start_tag('div',['id' => 'import-excel', 'class' => 'import']);
 
         $o .= html_writer::tag('h1', "Import Excel Data");
+
+
         $o .= html_writer::start_tag('form', array('method' => 'post',
-            'action' => 'uploadexcel.php',
+            'action' => 'import_excel.php',
             'enctype' => 'multipart/form-data'));
         $o .= html_writer::start_tag('div', ['class' => 'form-group']);
-        $o .= html_writer::tag('label', 'Choose File');
-        $o .= html_writer::tag('input', '', ['id' => 'import-filename', 'class' => 'form-control', 'value' => '']);
+        $o .= html_writer::tag('label', 'Document (.xlsx)');
+        $o .= html_writer::tag('input', '', [
+            'id' => 'import-filename',
+            'type' => 'file',
+            'name' => 'fileToUpload',
+            'class' => 'form-control',
+            'value' => ''
+        ]);
+        $o .= html_writer::end_tag('div');
+        $o .= html_writer::start_tag('div', ['class' => 'form-group']);
         $o .= html_writer::tag('button', 'Upload', [
             'id' => 'import-btn',
             'type' => 'submit',
             'name' => 'submit',
             'class' => 'btn btn-success',
         ]);
+        $o .= html_writer::tag('button', 'Cancel', [
+            'id' => 'cancel-import-btn',
+            'type' => 'button',
+            'name' => 'cancel',
+            'class' => 'btn btn-cancel',
+        ]);
+        $o .= html_writer::end_tag('div');
+        $o .= html_writer::end_tag('form');
         /*
 
         <h1>Upload Excel File</h1>
-	<form method="POST" action="uploadexcel.php" enctype="multipart/form-data">
-		<div class="form-group">
-			<label>Choose File</label>
-			<input type="file" name="uploadFile" class="form-control" />
-		</div>
-		<div class="form-group">
-			<button type="submit" name="submit" class="btn btn-success">Upload</button>
-		</div>
-	</form>
+        <form role="form" method="post" action='/plugins/importFile' enctype="multipart/form-data">
+            {{ csrf_field() }}
+            <div class="form-group">
+                <label>Document (.xlsx) <small style="color: red">*</small></label>
+                <input type="file" name="file1" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">SUBMIT</button>
+            </div>
+        </form>
 
 */
         $o .= html_writer::end_tag('div');
@@ -232,7 +251,7 @@ class report_plugins_renderer extends plugin_renderer_base {
         ]);
         $o .= html_writer::tag('div', 'Hide Core', ['id' => 'toggle-core', 'class' => 'btn btn-primary hide-core']);
         $o .= "&nbsp;";
-        $o .= html_writer::tag('div', 'Import Excel Data', ['id' => 'import-excel', 'class' => 'btn btn-secondary import-excel']);
+        $o .= html_writer::tag('div', 'Import Excel Data', ['id' => 'import-excel-btn', 'class' => 'btn btn-primary']);
         $o .= "&nbsp;";
 //        $o .= html_writer::tag('div', 'Export Excel Data', ['id' => 'export-excel', 'class' => 'btn btn-secondary export-excel']);
 
