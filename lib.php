@@ -98,14 +98,14 @@ function pluginTemplate() {
         "install_path" => "Install Path",
         "dependencies" => "Dependencies (min. version)",
         "developer" => "Developer",
-        "qmul_plugin" => "QMUL Plugin",
+        "uses" => "Nr of Uses",
         "description" => "Description",
         "plugin_url" => "Plugin URL",
         "wiki_url" => "Wiki URL",
         "info_url" => "Info URL",
         "requester" => "Requester",
         "year_added" => "Year added",
-        "uses_number" => "Nr of Uses",
+        "qmul_plugin" => "QMUL Plugin",
         "public" => "Public",
     ];
 }

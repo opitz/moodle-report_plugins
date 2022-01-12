@@ -37,6 +37,44 @@ use \PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 //echo "exporting to Excel here...";
 
 $plugins = $DB->get_records('report_plugins');
+$pluginsbytype = core_plugin_manager::instance()->get_plugins();
+
+$plugins1 = [];
+foreach ($plugins as $plugin) {
+    $plugins1[$plugin->install_path] = $plugin;
+}
+
+foreach ($pluginsbytype as $plugintype => $plugins2) {
+    // Get the uses of certain plugin types and match the values.
+    switch ($plugintype) {
+        case 'block':
+            $pluginuses = get_block_plugins();
+            match_uses($plugins2, $pluginuses);
+            break;
+        case 'format':
+            $pluginuses = get_format_plugins();
+            match_uses($plugins2, $pluginuses);
+            break;
+        case 'mod':
+            $pluginuses = get_module_plugins();
+            match_uses($plugins2, $pluginuses);
+            break;
+    }
+    foreach ($plugins2 as $plugin2) {
+        if ($plugin2->source == 'ext' ) {
+            $install_path = substr($plugin2->rootdir, 14);
+            if (isset($plugins1[$install_path])) {
+                $plugins1[$install_path]->uses = $plugin2->uses;
+                $plugins1[$install_path]->dependencies = $plugin2->dependencies;
+            }
+        }
+    }
+}
+
+//$plugins3 = [];
+//foreach ($plugins1 as $plugin) {
+//    $plugins3[] = $plugin;
+//}
 
 
 $filename = 'Plugins_Test.xlsx';
@@ -59,10 +97,24 @@ function export2excel($plugins, $fileName) {
     if ($plugins) foreach ($plugins as $key => $plugin) {
         $row = array();
         foreach ($pluginKeys as $pluginKey) {
-            $row[$pluginKey] = $plugin->$pluginKey;
+            if ($pluginKey == 'dependencies') {
+                $text = '';
+                // If there are dependencies show them and the required version.
+                if (count($plugin->$pluginKey) > 0) {
+                    foreach ($plugin->$pluginKey as $dependency => $version) {
+                        if (strlen($text) > 0) {
+                            $text .= ", ";
+                        }
+                        $text .= "$dependency ($version)";
+                    }
+                }
+                $row[$pluginKey] = $text;
+            } else {
+                $row[$pluginKey] = $plugin->$pluginKey;
+            }
         }
         // Add the row to the sheet starting with row 2
-        $sheet->fromArray($row,NULL, 'A'.((int)$key+2));
+        $sheet->fromArray($row,NULL, 'A'.((int)$key+1));
     }
 
     // Formatting
@@ -72,23 +124,23 @@ function export2excel($plugins, $fileName) {
 
     $sheet->getColumnDimension('B')->setWidth(40); // set width of title column
     $sheet->getColumnDimension('E')->setWidth(40); // set width of developer column
-    $sheet->getColumnDimension('F')->setWidth(80); // set width of description column
-    $sheet->getColumnDimension('G')->setWidth(40); // set width of plugin_url column
-    $sheet->getColumnDimension('H')->setWidth(40); // set width of wiki_url column
+    $sheet->getColumnDimension('F')->setWidth(40); // set width of description column
+    $sheet->getColumnDimension('H')->setWidth(80); // set width of wiki_url column
     $sheet->getColumnDimension('I')->setWidth(40); // set width of info_url column
     $sheet->getColumnDimension('J')->setWidth(40); // set width of requester column
+    $sheet->getColumnDimension('K')->setWidth(40); // set width of requester column
 
     // Formatting the header
-    $header = $sheet->getStyle('A1:L1');
+    $header = $sheet->getStyle('A1:O1');
     $header->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_DARKBLUE);
     $header->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
     $header->getFill()->getStartColor()->setARGB('FFCCCCCC');
     $header->getFont()->setBold(true);
 
     // Set cells to wrap text
-    $sheet->getStyle('E1:F999')->getAlignment()->setWrapText(true);
+    $sheet->getStyle('H1:F999')->getAlignment()->setWrapText(true);
     // Set cells to vertical align at the top
-    $sheet->getStyle('A:L')->getAlignment()->setVertical('top');
+    $sheet->getStyle('A:O')->getAlignment()->setVertical('top');
 
     // Finally write the file
     $writer = new Xlsx($spreadsheet);

@@ -31,10 +31,12 @@ require_once($CFG->dirroot.'/report/plugins/lib.php');
 
 require_login();
 
+// Set up the page.
 $pluginname = get_string('pluginname', 'report_plugins');
-
 $PAGE->set_title($pluginname);
 $PAGE->set_heading($pluginname);
+
+// Get JavaScript.
 $PAGE->requires->js_call_amd('report_plugins/navigation', 'init', array());
 $PAGE->requires->js_call_amd('report_plugins/ajax', 'init', array());
 
@@ -48,5 +50,6 @@ echo $output->render_importpage();
 // Get all plugins with some information sorted by type.
 $pluginsbytype = core_plugin_manager::instance()->get_plugins();
 echo $output->render_pluginsbytype($pluginsbytype);
+
 echo $output->footer();
 
