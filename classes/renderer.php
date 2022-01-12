@@ -73,21 +73,6 @@ class report_plugins_renderer extends plugin_renderer_base {
         ]);
         $o .= html_writer::end_tag('div');
         $o .= html_writer::end_tag('form');
-        /*
-
-        <h1>Upload Excel File</h1>
-        <form role="form" method="post" action='/plugins/importFile' enctype="multipart/form-data">
-            {{ csrf_field() }}
-            <div class="form-group">
-                <label>Document (.xlsx) <small style="color: red">*</small></label>
-                <input type="file" name="file1" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-success">SUBMIT</button>
-            </div>
-        </form>
-
-*/
         $o .= html_writer::end_tag('div');
         return $o;
     }
@@ -148,7 +133,6 @@ class report_plugins_renderer extends plugin_renderer_base {
             'Directory' => 'rootdir',
             'Version' => 'versiondb',
             'Release' => 'release',
-            'Dependencies' => 'dependencies',
             'Uses' => 'uses'
         ];
 

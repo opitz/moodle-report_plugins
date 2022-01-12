@@ -55,6 +55,8 @@ define(['jquery', 'jqueryui'], function($) {
                         $(this).removeClass('show-core');
                         $(this).html('Hide Core');
                     }
+                    $('.toggler-closed').addClass('click-again').click();
+//                    $('.click-again').removeClass('click-again').click();
                 });
             };
 
@@ -75,18 +77,26 @@ define(['jquery', 'jqueryui'], function($) {
             };
 
             var toggleType = function() {
-                $(".toggle-type.toggler-open").on('click', function() {
-                    var type = $(this).attr('type');
-                    $("tr." + type).hide();
-                    $(this).hide().parent().find('.toggler-closed').show();
-                });
-                $(".toggle-type.toggler-closed").on('click', function() {
-                    var type = $(this).attr('type');
-                    $("tr." + type).show();
-                    if ($('#toggle-core').hasClass('show-core')) {
-                        $("tr." + type + ".std").hide();
+                $(".toggle-type.toggler-open").on('click', function(event) {
+                    if (event.altKey) {
+                        $('.toggler-open').click();
+                    } else {
+                        var type = $(this).attr('type');
+                        $("tr." + type).hide();
+                        $(this).hide().parent().find('.toggler-closed').show();
                     }
-                    $(this).hide().parent().find('.toggler-open').show();
+                });
+                $(".toggle-type.toggler-closed").on('click', function(event) {
+                    if (event.altKey) {
+                        $('.toggler-closed').click();
+                    } else {
+                        var type = $(this).attr('type');
+                        $("tr." + type).show();
+                        if ($('#toggle-core').hasClass('show-core')) {
+                            $("tr." + type + ".std").hide();
+                        }
+                        $(this).hide().parent().find('.toggler-open').show();
+                    }
                 });
             };
 
