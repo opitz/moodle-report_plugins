@@ -38,13 +38,16 @@ $PAGE->set_heading($pluginname);
 
 // Get JavaScript.
 $PAGE->requires->js_call_amd('report_plugins/navigation', 'init', array());
-$PAGE->requires->js_call_amd('report_plugins/ajax', 'init', array());
+//$PAGE->requires->js_call_amd('report_plugins/ajax', 'init', array());
 
 $output = $PAGE->get_renderer('report_plugins');
 
 echo $output->header();
-echo $output->render_navigation();
-echo $output->render_detailspage();
+echo $output->render_grauschleier();
+echo $output->render_waitingbox();
+echo $output->render_plugins_navigation();
+echo $output->render_detailsarea();
+echo $output->render_coursesarea();
 echo $output->render_importpage();
 
 // Get all plugins with some information sorted by type.

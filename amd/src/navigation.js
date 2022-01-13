@@ -2,16 +2,16 @@ define(['jquery', 'jqueryui'], function($) {
     /* eslint no-console: ["error", { allow: ["log", "warn", "error"] }] */
     return {
         init: function() {
-
             var showDetails = function() {
-                $('.displayname').on('click', function() {
-                    var displayName = $(this).html();
-                    var installPath = $(this).parent().find('.rootdir').html();
-                    var version = $(this).parent().find('.versiondb').html();
-                    var release = $(this).parent().find('.release').html();
-                    var uses = $(this).parent().find('.uses').html();
-                    var frankenstyle = $(this).parent().find('.frankenstyle').html();
+                $('.details-btn').on('click', function() {
+                    var displayName = $(this).parent().parent().find('.displayname').html();
+                    var installPath = $(this).parent().parent().find('.rootdir').html();
+                    var version = $(this).parent().parent().find('.versiondb').html();
+                    var release = $(this).parent().parent().find('.release').html();
+                    var uses = $(this).parent().parent().find('.uses').html();
+                    var frankenstyle = $(this).parent().parent().find('.frankenstyle').html();
                     console.log('==> clicking displayname ' + displayName);
+                    console.log('installPath: ' + installPath);
 
                     $.ajax({
                         url: "ajax/plugin_details.php",
@@ -26,19 +26,22 @@ define(['jquery', 'jqueryui'], function($) {
                             'sesskey': M.cfg.sesskey
                         },
                         success: function(result) {
-                            $('#details').html(result);
-                            $('.details').show();
-                            $('.plugins').hide();
+                            $('#details-content').html(result);
+                            $('#details-area').show();
+                            $('#grauschleier').show();
+//                            $('.plugins').hide();
                         }
                     });
 
                 });
             };
 
-            var closeDetails = function() {
-                $('#close-details').on('click', function() {
-                    $('.details').hide();
-                    $('.plugins').show();
+            var closeArea = function() {
+                $('.close-area-btn').on('click', function() {
+                    $('#details-area').hide();
+                    $('#courses-area').hide();
+                    $('#grauschleier').hide();
+//                    $('.plugins').show();
                 });
             };
 
@@ -57,6 +60,37 @@ define(['jquery', 'jqueryui'], function($) {
                     }
                     $('.toggler-closed').addClass('click-again').click();
 //                    $('.click-again').removeClass('click-again').click();
+                });
+            };
+
+            var showCourses = function() {
+                $('.courses-btn').on('click', function() {
+                    var displayname = $(this).parent().parent().find('.displayname').html();
+                    var pluginname = $(this).parent().parent().attr('pluginname');
+                    var plugintype = $(this).parent().parent().attr('type');
+                    console.log('pluginname: ' + pluginname);
+                    console.log('plugintype: ' + plugintype);
+                    var waitingtext = 'Please wait while retrieving Course data...!';
+                    $('#waiting-text').html(waitingtext);
+                    $('#grauschleier').show();
+                    $('#waiting-box').show();
+                    $.ajax({
+                        url: "ajax/list_admins.php",
+                        type: "POST",
+                        data: {
+                            'displayname': displayname,
+                            'pluginname': pluginname,
+                            'plugintype': plugintype,
+                            'sesskey': M.cfg.sesskey
+                        },
+                        success: function(result) {
+                            $('#courses-content').html(result);
+                            $('#waiting-box').hide();
+                            $('#courses-area').show();
+                            $('#grauschleier').show();
+                        }
+                    });
+
                 });
             };
 
@@ -106,6 +140,13 @@ define(['jquery', 'jqueryui'], function($) {
                     $('#import-excel').show();
                     $('.plugins').hide();
                 });
+
+                $('#import-btn').on('click', function() {
+                    var waitingtext = 'Please wait while importing Excel data.';
+                    $('#waiting-text').html(waitingtext);
+                    $('#grauschleier').show();
+                    $('#waiting-box').show();
+                });
             };
 
             var cancelImport = function() {
@@ -121,14 +162,14 @@ define(['jquery', 'jqueryui'], function($) {
              */
             var initFunctions = function() {
                 showDetails();
-                closeDetails();
+                closeArea();
                 toggleCore();
+                showCourses();
                 toggleAdmins();
                 toggleType();
                 importExcel();
                 cancelImport();
             };
-
 
             /**
              * The document is ready

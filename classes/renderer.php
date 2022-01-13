@@ -32,18 +32,52 @@ defined('MOODLE_INTERNAL') || die;
  */
 class report_plugins_renderer extends plugin_renderer_base {
 
-    public function render_detailspage() {
+    public function render_grauschleier() {
+        return html_writer::tag('div','', [
+            'id' => 'grauschleier',
+            'style' => 'display: none;',
+        ]);
+    }
+
+    public function render_detailsarea() {
         $o = '';
-        $o .= html_writer::tag('div','', ['id' => 'details', 'class' => 'details']);
+        $o .= html_writer::start_tag('div', ['id' => 'details-area', 'style' => 'display: none;']);
+        $o .= $this->render_details_navigation();
+        $o .= html_writer::tag('div','', ['id' => 'details-content']);
+        $o .= html_writer::end_tag('div');
         return $o;
     }
 
+    public function render_coursesarea() {
+        $o = '';
+        $o .= html_writer::start_tag('div', ['id' => 'courses-area', 'style' => 'display: none;']);
+        $o .= $this->render_courses_navigation();
+        $o .= html_writer::tag('div','', ['id' => 'courses-content']);
+        $o .= html_writer::end_tag('div');
+        return $o;
+    }
+
+    public function render_waitingbox() {
+        // A waiting box which is hidden by default.
+        $o = '';
+        $o .= html_writer::start_tag('div', array('id' => 'waiting-box' , 'style' => 'display: hidden;'));
+        $o .= html_writer::empty_tag('p');
+        $imageurl = "pix/tapping.gif";
+        $o .= html_writer::empty_tag('img', ['src' => $imageurl, 'id' => 'waiting-image', 'class' => 'center']);
+        $o .= html_writer::empty_tag('hr');
+        $o .= html_writer::empty_tag('p');
+        $o .= html_writer::empty_tag('p');
+        $o .= html_writer::start_tag('h3');
+        $o .= html_writer::tag('div', 'Please wait...!', ['id' => 'waiting-text', 'style' => 'text-align: center;']);
+        $o .= html_writer::end_tag('h3');
+        $o .= html_writer::end_tag('div');
+        return $o;
+    }
     public function render_importpage() {
         $o = '';
         $o .= html_writer::start_tag('div',['id' => 'import-excel', 'class' => 'import']);
 
         $o .= html_writer::tag('h1', "Import Excel Data");
-
 
         $o .= html_writer::start_tag('form', array('method' => 'post',
             'action' => 'import_excel.php',
@@ -79,7 +113,7 @@ class report_plugins_renderer extends plugin_renderer_base {
 
     public function render_pluginsbytype($pluginsbytype) {
         $o = '';
-        $o .= html_writer::start_tag('div', ['class' => 'plugins']);
+        $o .= html_writer::start_tag('div', ['class' => 'plugins-area']);
         foreach ($pluginsbytype as $plugintype => $plugins) {
             $o .= $this->render_plugins_report($plugins, $plugintype);
         }
@@ -156,7 +190,6 @@ class report_plugins_renderer extends plugin_renderer_base {
         $header = $toggler . ' ' . $typetitle[$plugintype] . " ($plugintype)";
 
         // Now put everything together.
-
         $o .= html_writer::start_tag('div', ['class' => "type-wrapper $plugintype"]);
         $o .= html_writer::tag('div', $this->heading($header), ['class' => "type-title $plugintype"]);
         $o .= $this->show_plugin_list($plugins, $plugintype, $columns);
@@ -183,6 +216,10 @@ class report_plugins_renderer extends plugin_renderer_base {
         foreach ($columns as $column => $source) {
             $o .= html_writer::tag('th', $column, ['id' => $source]);
         }
+        // Add columns for action buttons.
+        $o .= html_writer::tag('th', '', ['id' => 'details-actions']);
+        $o .= html_writer::tag('th', '', ['id' => 'courses-actions']);
+
         $o .= html_writer::end_tag('tr');
         foreach ($plugins as $plugin) {
             $o .= html_writer::start_tag('tr',
@@ -213,6 +250,20 @@ class report_plugins_renderer extends plugin_renderer_base {
 
                 $o .= html_writer::tag('td', $text, ['class' => $columns[$key]]);
             }
+            // Add action buttons.
+            $o .= html_writer::start_tag('td');
+            $o .= html_writer::tag('button', 'Details', ['class' => 'details-btn btn btn-primary btn-sm']);
+            $o .= html_writer::end_tag('td');
+            $o .= html_writer::start_tag('td');
+            if ($plugin->uses > 0) {
+                $o .= html_writer::tag('button', 'Courses', ['class' => 'courses-btn btn btn-primary btn-sm']);
+            } else {
+                $o .= html_writer::tag('button', 'Courses', [
+                    'class' => 'courses-btn-inactive btn btn-primary btn-sm disabled'
+                ]);
+            }
+            $o .= html_writer::end_tag('td');
+
             $o .= html_writer::end_tag("tr");
         }
         $o .= html_writer::end_tag("table");
@@ -220,14 +271,14 @@ class report_plugins_renderer extends plugin_renderer_base {
     }
 
     /**
-     * Return the HTML code for the navigation
+     * Return the HTML code for the plugins navigation
      *
      * @return string
      */
-    public function render_navigation() {
+    public function render_plugins_navigation() {
         $o = '';
         // Navigation for the plugins page
-        $o .= html_writer::start_tag('div', ['class' => 'plugins']);
+        $o .= html_writer::start_tag('div', ['id' => 'plugins-nav']);
         $o .= html_writer::start_tag('form', [
             'id' => 'export-excel2',
             'method' => 'post',
@@ -247,11 +298,35 @@ class report_plugins_renderer extends plugin_renderer_base {
         $o .= html_writer::end_tag('form');
 
         $o .= html_writer::end_tag('div');
+        $o .= html_writer::tag('p', '&nbsp;');
+        return $o;
+    }
 
-
+    /**
+     * Return the HTML code for the details navigation
+     *
+     * @return string
+     */
+    public function render_details_navigation() {
+        $o = '';
         // Navigation for the details page
-        $o .= html_writer::start_tag('div', ['class' => 'details', 'style' => 'display: none;']);
-        $o .= html_writer::tag('div', 'Close', ['id' => 'close-details', 'class' => 'btn btn-primary']);
+        $o .= html_writer::start_tag('div', ['id' => 'details-nav']);
+        $o .= html_writer::tag('div', 'Close', ['id' => 'close-details', 'class' => 'close-area-btn btn btn-primary']);
+        $o .= html_writer::end_div();
+        $o .= html_writer::empty_tag('hr');
+        return $o;
+    }
+
+    /**
+     * Return the HTML code for the details navigation
+     *
+     * @return string
+     */
+    public function render_courses_navigation() {
+        $o = '';
+        // Navigation for the details page
+        $o .= html_writer::start_tag('div', ['id' => 'courses-nav']);
+        $o .= html_writer::tag('div', 'Close', ['id' => 'close-courses', 'class' => 'close-area-btn btn btn-primary']);
         $o .= "&nbsp;";
         $o .= html_writer::tag('div', 'Hide Admins', ['id' => 'toggle-admins', 'class' => 'btn btn-primary hide-admins']);
         $o .= html_writer::end_tag('div');

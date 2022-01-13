@@ -24,7 +24,7 @@ th#displayname {
 }
 
 th#rootdir {
-    width: 500px;
+    width: 250px;
 }
 
 th#versiondb {
@@ -32,7 +32,7 @@ th#versiondb {
 }
 
 th#release {
-    width: 180px;
+    width: 250px;
 }
 
 th#source {
@@ -40,7 +40,15 @@ th#source {
 }
 
 th#uses {
-    width: 400px;
+    width: 40px;
+}
+
+th#details-actions {
+    width: 40px;
+}
+
+th#admins-actions {
+    width: 40px;
 }
 
 td.displayname {
@@ -61,4 +69,47 @@ td.frankenstyle {
 
 .title-col {
     vertical-align: top;
+}
+
+#details-area, #courses-area {
+    position: fixed;
+    top: 80px;
+    width: 60%;
+    height: 60%;
+    background-color: white;
+    border: 3px solid grey;
+    overflow-y:scroll;
+    overflow-x:scroll;
+    margin: 5% auto; /* Will not center vertically and won't work in IE6/7. */
+    left: 0;
+    right: 0;
+}
+
+#waiting-box {
+    position: fixed;
+    top: 80px;
+    width: 50%;
+    height: 40%;
+    padding-top: 50px;
+    background-color: white;
+    border: 3px solid grey;
+    overflow-y:scroll;
+    overflow-x:scroll;
+    margin: 5% auto; /* Will not center vertically and won't work in IE6/7. */
+    left: 0;
+    right: 0;
+}
+
+#details-nav, #courses-nav, #details-content, #courses-content {
+    padding: 5px;
+}
+
+#grauschleier {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.2;
 }
