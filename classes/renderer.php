@@ -108,6 +108,7 @@ class report_plugins_renderer extends plugin_renderer_base {
         $o .= html_writer::end_tag('div');
         $o .= html_writer::end_tag('form');
         $o .= html_writer::end_tag('div');
+        $o .= html_writer::empty_tag('hr');
         return $o;
     }
 
@@ -312,8 +313,12 @@ class report_plugins_renderer extends plugin_renderer_base {
         // Navigation for the details page
         $o .= html_writer::start_tag('div', ['id' => 'details-nav']);
         $o .= html_writer::tag('div', 'Close', ['id' => 'close-details', 'class' => 'close-area-btn btn btn-primary']);
-        $o .= html_writer::end_div();
         $o .= html_writer::empty_tag('hr');
+        $o .= html_writer::end_div();
+        $o .= "&nbsp;<br>";
+        $o .= "&nbsp;<br>";
+        $o .= "&nbsp;<br>";
+
         return $o;
     }
 
@@ -329,9 +334,13 @@ class report_plugins_renderer extends plugin_renderer_base {
         $o .= html_writer::tag('div', 'Close', ['id' => 'close-courses', 'class' => 'close-area-btn btn btn-primary']);
         $o .= "&nbsp;";
         $o .= html_writer::tag('div', 'Hide Admins', ['id' => 'toggle-admins', 'class' => 'btn btn-primary hide-admins']);
+        $o .= html_writer::empty_tag('hr');
         $o .= html_writer::end_tag('div');
 
-        $o .= html_writer::empty_tag('hr');
+        $o .= "&nbsp;<br>";
+        $o .= "&nbsp;<br>";
+        $o .= "&nbsp;<br>";
+
         return $o;
     }
 

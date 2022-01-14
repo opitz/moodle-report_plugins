@@ -71,7 +71,7 @@ td.frankenstyle {
     vertical-align: top;
 }
 
-#details-area, #courses-area {
+#details-area0, #courses-area0 {
     position: fixed;
     top: 80px;
     width: 60%;
@@ -83,6 +83,7 @@ td.frankenstyle {
     margin: 5% auto; /* Will not center vertically and won't work in IE6/7. */
     left: 0;
     right: 0;
+    z-index: 100;
 }
 
 #waiting-box {
@@ -98,10 +99,25 @@ td.frankenstyle {
     margin: 5% auto; /* Will not center vertically and won't work in IE6/7. */
     left: 0;
     right: 0;
+    z-index: 100;
 }
 
-#details-nav, #courses-nav, #details-content, #courses-content {
+#details-content, #courses-content {
+    position: fixed;
+    top: 145px;
+    width: 60%;
+    height: 50%;
     padding: 5px;
+    background-color: white;
+    border-bottom: 3px solid grey;
+    border-left: 3px solid grey;
+    border-right: 3px solid grey;
+    overflow-y:scroll;
+    overflow-x:scroll;
+    margin: 5% auto; /* Will not center vertically and won't work in IE6/7. */
+    left: 0;
+    right: 0;
+    z-index: 100;
 }
 
 #grauschleier {
@@ -112,4 +128,20 @@ td.frankenstyle {
     height: 100%;
     background-color: black;
     opacity: 0.2;
+}
+
+#details-nav, #courses-nav {
+    position: fixed;
+    top: 80px;
+    height: 65px;
+    width: 60%;
+    padding: 5px;
+    background-color: white;
+    border-top: 3px solid grey;
+    border-left: 3px solid grey;
+    border-right: 3px solid grey;
+    margin: 5% auto; /* Will not center vertically and won't work in IE6/7. */
+    left: 0;
+    right: 0;
+    z-index: 100;
 }
