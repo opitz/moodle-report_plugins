@@ -113,6 +113,7 @@ class report_plugins_renderer extends plugin_renderer_base {
     }
 
     public function render_pluginsbytype($pluginsbytype) {
+        $pbt = ksort ($pluginsbytype);
         $o = '';
         $o .= html_writer::start_tag('div', ['class' => 'plugins-area']);
         foreach ($pluginsbytype as $plugintype => $plugins) {
@@ -168,7 +169,8 @@ class report_plugins_renderer extends plugin_renderer_base {
             'Directory' => 'rootdir',
             'Version' => 'versiondb',
             'Release' => 'release',
-            'Uses' => 'uses'
+            'Description' => 'description',
+            'Uses' => 'uses',
         ];
 
         // Get the uses of certain plugin types and match the values.
@@ -215,7 +217,7 @@ class report_plugins_renderer extends plugin_renderer_base {
 
         // Build the table header.
         foreach ($columns as $column => $source) {
-            $o .= html_writer::tag('th', $column, ['id' => $source]);
+            $o .= html_writer::tag('th', $column, ['class' => $source]);
         }
         // Add columns for action buttons.
         $o .= html_writer::tag('th', '', ['id' => 'details-actions']);
@@ -223,6 +225,8 @@ class report_plugins_renderer extends plugin_renderer_base {
 
         $o .= html_writer::end_tag('tr');
         foreach ($plugins as $plugin) {
+            $plugin->installpath = str_replace('/var/www/html/', '', $plugin->rootdir);
+            add_data($plugin);
             $o .= html_writer::start_tag('tr',
                 [
                     'class' => "$plugin->type $plugin->name $plugin->source",
@@ -230,7 +234,7 @@ class report_plugins_renderer extends plugin_renderer_base {
                     'type' => $plugin->type
                 ]
             );
-            // Hide a column with the franken_style name oof the plugin to be used by JavaScript when showing details.
+            // Hide a column with the franken_style name of the plugin to be used by JavaScript when showing details.
             $o .= html_writer::tag('td', $plugin->type . '_' . $plugin->name, ['class' => 'frankenstyle']);
 
             foreach ($columns as $key => $column) {
@@ -286,6 +290,8 @@ class report_plugins_renderer extends plugin_renderer_base {
             'action' => 'export_excel.php'
         ]);
         $o .= html_writer::tag('div', 'Hide Core', ['id' => 'toggle-core', 'class' => 'btn btn-primary hide-core']);
+        $o .= "&nbsp;";
+        $o .= html_writer::tag('div', 'Show Descriptions', ['id' => 'toggle-descriptions', 'class' => 'btn btn-primary show-descriptions']);
         $o .= "&nbsp;";
         $o .= html_writer::tag('div', 'Import Excel Data', ['id' => 'import-excel-btn', 'class' => 'btn btn-primary']);
         $o .= "&nbsp;";

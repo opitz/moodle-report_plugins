@@ -32,16 +32,7 @@ require_sesskey();
 $frankenstyle = required_param('frankenstyle', PARAM_RAW);
 $plugin = core_plugin_manager::instance()->get_plugin_info($frankenstyle);
 $plugin->installpath = str_replace('/var/www/html/', '', $plugin->rootdir);
-//$plugin = new stdClass();
-
-//$plugin->displayname = required_param('displayname', PARAM_RAW);
-//$plugin->installpath = required_param('installpath', PARAM_RAW);
-//$plugin->version = required_param('version', PARAM_RAW);
-//$plugin->release = required_param('release', PARAM_RAW);
 $plugin->uses = required_param('uses', PARAM_RAW);
-
-
-
 
 echo plugin_details($plugin);
 
@@ -101,7 +92,7 @@ function plugin_details($plugin) {
     return $o;
 }
 
-function add_data(&$plugin) {
+function add_data0(&$plugin) {
     global $DB;
 
     $record = $DB->get_record('report_plugins', ['install_path' => $plugin->installpath]);

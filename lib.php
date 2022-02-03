@@ -110,3 +110,11 @@ function pluginTemplate() {
     ];
 }
 
+function add_data(&$plugin) {
+    global $DB;
+
+    $record = $DB->get_record('report_plugins', ['install_path' => $plugin->installpath]);
+    if ($record) foreach ($record as $key => $value) {
+        $plugin->$key = $value;
+    }
+}

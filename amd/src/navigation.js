@@ -63,6 +63,24 @@ define(['jquery', 'jqueryui'], function($) {
                 });
             };
 
+            var toggleDescriptions = function() {
+                $("#toggle-descriptions").on('click', function() {
+                    if ($(this).hasClass('hide-descriptions')) {
+                        $('.description').hide();
+                        $(this).addClass('show-descriptions');
+                        $(this).removeClass('hide-descriptions');
+                        $(this).html('Show Descriptions');
+                    } else {
+                        $('.description').show();
+                        $(this).addClass('hide-descriptions');
+                        $(this).removeClass('show-descriptions');
+                        $(this).html('Hide Descriptions');
+                    }
+                    $('.toggler-closed').addClass('click-again').click();
+//                    $('.click-again').removeClass('click-again').click();
+                });
+            };
+
             var showCourses = function() {
                 $('.courses-btn').on('click', function() {
                     var displayname = $(this).parent().parent().find('.displayname').html();
@@ -164,6 +182,7 @@ define(['jquery', 'jqueryui'], function($) {
                 showDetails();
                 closeArea();
                 toggleCore();
+                toggleDescriptions();
                 showCourses();
                 toggleAdmins();
                 toggleType();
@@ -179,6 +198,7 @@ define(['jquery', 'jqueryui'], function($) {
                 initFunctions();
                 $('#import-excel').hide();
                 $('#toggle-core').click();
+                $('.description').hide();
                 $('.toggler-open').each(function() {
                    $(this).click();
                 });
