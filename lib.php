@@ -113,7 +113,13 @@ function pluginTemplate() {
 function add_data(&$plugin) {
     global $DB;
 
-    $record = $DB->get_record('report_plugins', ['install_path' => $plugin->installpath]);
+    $installpath = $plugin->installpath;
+    $sql = "
+        select * from {report_plugins} where install_path = '$installpath'
+    ";
+//    $result = $DB->get_records_sql($sql);
+    $record = $DB->get_record_sql($sql);
+//    $record = $DB->get_record('report_plugins', ['install_path' => $plugin->installpath]);
     if ($record) foreach ($record as $key => $value) {
         $plugin->$key = $value;
     }
