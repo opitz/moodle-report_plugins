@@ -19,40 +19,75 @@ table .table-header {
     font-weight: bold;
 }
 
-th#displayname {
-    width: 300px;
+th.displayname {
+    width: 20%;
 }
 
-th#rootdir {
-    width: 250px;
+th.rootdir {
+    width: 20%;
 }
 
-th#versiondb {
-    width: 120px;
+th.versiondb {
+    width: 10%;
 }
 
-th#release {
-    width: 250px;
+th.release {
+    width: 15%;
 }
 
-th#source {
-    width: 80px;
+th.source {
+    width: 5%;
 }
 
-th#uses {
-    width: 40px;
-}
-
-th#details-actions {
-    width: 40px;
-}
-
-th#admins-actions {
-    width: 40px;
+th.description {
+    width: 30%;
 }
 
 td.displayname {
+    min-width: 150px;
+    width: 20%;
     font-weight: bold;
+    vertical-align: top;
+}
+
+td.rootdir {
+    width: 20%;
+    vertical-align: top;
+}
+
+td.versiondb {
+    width: 10%;
+    vertical-align: top;
+}
+
+td.release {
+    width: 15%;
+    vertical-align: top;
+}
+
+td.source {
+    width: 5%;
+    vertical-align: top;
+}
+
+td.description {
+    width: 30%;
+    vertical-align: top;
+}
+
+td.uses {
+    width: 3%;
+    vertical-align: top;
+}
+
+td.details-actions {
+    width: 40px;
+    vertical-align: top;
+}
+
+td.admins-actions {
+    width: 40px;
+    vertical-align: top;
 }
 
 tr.std td {

@@ -229,7 +229,7 @@ class report_plugins_renderer extends plugin_renderer_base {
             add_data($plugin);
             $o .= html_writer::start_tag('tr',
                 [
-                    'class' => "$plugin->type $plugin->name $plugin->source",
+                    'class' => "$plugin->type $plugin->source",
                     'pluginname' => $plugin->name,
                     'type' => $plugin->type
                 ]
@@ -291,8 +291,8 @@ class report_plugins_renderer extends plugin_renderer_base {
         ]);
         $o .= html_writer::tag('div', 'Hide Core', ['id' => 'toggle-core', 'class' => 'btn btn-primary hide-core']);
         $o .= "&nbsp;";
-        $o .= html_writer::tag('div', 'Show Descriptions', ['id' => 'toggle-descriptions', 'class' => 'btn btn-primary show-descriptions']);
-        $o .= "&nbsp;";
+//        $o .= html_writer::tag('div', 'Show Descriptions', ['id' => 'toggle-descriptions', 'class' => 'btn btn-primary show-descriptions']);
+//        $o .= "&nbsp;";
         $o .= html_writer::tag('div', 'Import Excel Data', ['id' => 'import-excel-btn', 'class' => 'btn btn-primary']);
         $o .= "&nbsp;";
 //        $o .= html_writer::tag('div', 'Export Excel Data', ['id' => 'export-excel', 'class' => 'btn btn-secondary export-excel']);
