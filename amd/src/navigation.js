@@ -175,6 +175,29 @@ define(['jquery', 'jqueryui'], function($) {
                 });
             };
 
+            var getPlugins = function() {
+
+                $('#get_plugin_details').on('click', function() {
+                    console.log('===> now getting plugins');
+                    $('#waiting-box').show();
+                    $('#result').html('');
+                    $.ajax({
+                        url: "ajax/get_plugin_details.php",
+                        type: "POST",
+                        data: {
+                            'sesskey': M.cfg.sesskey
+                        },
+                        success: function(result) {
+                            $('#waiting-box').hide();
+                            $('#result').html(result);
+                            console.log(result);
+                        }
+                    });
+
+                });
+            };
+
+
             /**
              * Initialize all functions
              */
@@ -188,6 +211,7 @@ define(['jquery', 'jqueryui'], function($) {
                 toggleType();
                 importExcel();
                 cancelImport();
+                getPlugins();
             };
 
             /**

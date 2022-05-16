@@ -291,17 +291,23 @@ class report_plugins_renderer extends plugin_renderer_base {
         ]);
         $o .= html_writer::tag('div', 'Hide Core', ['id' => 'toggle-core', 'class' => 'btn btn-primary hide-core']);
         $o .= "&nbsp;";
-//        $o .= html_writer::tag('div', 'Show Descriptions', ['id' => 'toggle-descriptions', 'class' => 'btn btn-primary show-descriptions']);
-//        $o .= "&nbsp;";
         $o .= html_writer::tag('div', 'Import Excel Data', ['id' => 'import-excel-btn', 'class' => 'btn btn-primary']);
         $o .= "&nbsp;";
-//        $o .= html_writer::tag('div', 'Export Excel Data', ['id' => 'export-excel', 'class' => 'btn btn-secondary export-excel']);
 
         $o .= html_writer::tag('input', '', [
             'type' => 'submit',
             'value' => 'Export Excel Data',
             'class' => 'btn btn-primary'
         ]);
+        $o .= "&nbsp;";
+
+        // A button to start the crawl.
+        $o .= html_writer::tag('span', 'Refresh code data', [
+            'id' => 'get_plugin_details',
+            'class' => 'btn btn-primary'
+        ]);
+        $o .= "&nbsp;";
+
         $o .= html_writer::end_tag('form');
 
         $o .= html_writer::end_tag('div');
